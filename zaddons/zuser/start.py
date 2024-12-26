@@ -1,6 +1,6 @@
 import mysql.connector
 from datetime import datetime
-from pyrogram import Client, filters
+from configs._def_main_ import *  
 
 # Conexión a la base de datos MySQL con la contraseña directamente en el código
 def connect_to_db():
