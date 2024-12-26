@@ -5,6 +5,7 @@ import logging
 from datetime import datetime
 import requests, re, time
 from Templates.chattext import *
+from db.data import *
 
 load_dotenv(".env")
 
