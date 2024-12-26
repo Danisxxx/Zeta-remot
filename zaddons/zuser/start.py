@@ -1,6 +1,6 @@
 import mysql.connector
 from datetime import datetime
-from configs._def_main_ import *  
+from pyrogram import Client, filters
 
 # Conexión a la base de datos MySQL con la contraseña directamente en el código
 def connect_to_db():
@@ -11,6 +11,26 @@ def connect_to_db():
         database="railway",
         port=54123
     )
+
+# Función para crear la tabla 'users' si no existe
+def create_users_table():
+    db = connect_to_db()
+    cursor = db.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id BIGINT PRIMARY KEY,
+            rango VARCHAR(255),
+            priv INT,
+            dias INT,
+            creditos INT,
+            antispam INT,
+            ban VARCHAR(255),
+            bin_lasted VARCHAR(255),
+            regist DATETIME
+        )
+    """)
+    db.commit()
+    db.close()
 
 # Función para verificar si el usuario existe en la base de datos
 def user_exists(user_id):
@@ -35,6 +55,9 @@ def register_user(user_id):
 
 @zeta("start")
 async def help_command(client, message):
+    # Crear la tabla si no existe
+    create_users_table()
+
     user_id = message.from_user.id
     user = user_exists(user_id)
 
